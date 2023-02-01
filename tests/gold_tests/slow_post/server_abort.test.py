@@ -21,8 +21,13 @@ Test.Summary = '''
 AuTest with bad configuration of microserver to simulate server aborting the connection unexpectedly
 '''
 ts = Test.MakeATSProcess("ts", enable_tls=True)
+# note the microserver by default is not configured to use ssl
 server = Test.MakeOriginServer("server")
 ts.Disk.remap_config.AddLine(
+    # The following config tells ATS to do tls with the origin server on a
+    # non-tls port. This is misconfigured intentionally to trigger an exception
+    # on the origin server so that it aborts the connection upon receiving a
+    # request
     'map / https://127.0.0.1:{0}'.format(server.Variables.Port))
 ts.Disk.ssl_multicert_config.AddLine(
     'dest_ip=* ssl_cert_name=aaa-signed.pem ssl_key_name=aaa-signed.key'
