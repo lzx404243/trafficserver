@@ -15,22 +15,18 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+import re
 
 Test.Summary = '''
-Au test  with bad configuration of microserver causes YTS to crash
+AuTest with bad configuration of microserver to simulate server aborting the connection unexpectedly
 '''
-
-ts = Test.MakeATSProcess("ts", enable_tls=True, block_for_debug=False)
-
+ts = Test.MakeATSProcess("ts", enable_tls=True)
 server = Test.MakeOriginServer("server")
-
 ts.Disk.remap_config.AddLine(
     'map / https://127.0.0.1:{0}'.format(server.Variables.Port))
-
 ts.Disk.ssl_multicert_config.AddLine(
     'dest_ip=* ssl_cert_name=aaa-signed.pem ssl_key_name=aaa-signed.key'
 )
-
 ts.Disk.records_config.update({
     'proxy.config.diags.debug.tags': 'http|dns',
     'proxy.config.diags.debug.enabled': 1,
@@ -43,3 +39,8 @@ tr.Processes.Default.StartBefore(server)
 tr.Processes.Default.StartBefore(ts)
 tr.Processes.Default.Command = "curl -v -k -H \"host: foo.com\" https://127.0.0.1:{0}".format(ts.Variables.ssl_port)
 tr.ReturnCode = 0
+tr.StillRunningAfter = server
+tr.StillRunningAfter = ts
+server.Streams.stderr += Testers.ContainsExpression(
+    "Exception happened during processing of request from.*\nTraceback \\(most recent call last\\)",
+    "Verify that the server gets an exception and a backtrace when processing the request.", reflags=re.MULTILINE)
