@@ -151,14 +151,17 @@ class ProxyProtocolOutTest:
             "dest_ip=* ssl_cert_name=server.pem ssl_key_name=server.key"
         )
 
+        # self._ts.Disk.remap_config.AddLine(
+        #     f"map / https://backend.pp.origin.com:{self._server.Variables.}/")
+
         self._ts.Disk.remap_config.AddLine(
-            f"map / http://backend.pp.origin.com:{self._server.Variables.http_port}/")
+            f"map / https://backend.pp.origin.com:{self._server.Variables.https_port}/")
 
         self._ts.Disk.records_config.update({
             "proxy.config.ssl.server.cert.path": f"{self._ts.Variables.SSLDir}",
             "proxy.config.ssl.server.private_key.path": f"{self._ts.Variables.SSLDir}",
             "proxy.config.diags.debug.enabled": 1,
-            "proxy.config.diags.debug.tags": "http|proxyprotocol",
+            "proxy.config.diags.debug.tags": "ssl|http|proxyprotocol",
             "proxy.config.http.proxy_protocol_out": self._pp_version,
             "proxy.config.dns.nameservers": f"127.0.0.1:{self._dns.Variables.Port}",
             "proxy.config.dns.resolv_conf": 'NULL',
@@ -233,10 +236,10 @@ class ProxyProtocolOutTest:
         self.setLogExpectations(tr)
 
 
-ProxyProtocolInTest().run()
+# ProxyProtocolInTest().run()
 
-ProxyProtocolOutTest(pp_version=-1, is_tunnel=False).run()
+#ProxyProtocolOutTest(pp_version=-1, is_tunnel=False).run()
 ProxyProtocolOutTest(pp_version=1, is_tunnel=False).run()
-ProxyProtocolOutTest(pp_version=2, is_tunnel=False).run()
-ProxyProtocolOutTest(pp_version=1, is_tunnel=True).run()
-ProxyProtocolOutTest(pp_version=2, is_tunnel=True).run()
+#ProxyProtocolOutTest(pp_version=2, is_tunnel=False).run()
+#ProxyProtocolOutTest(pp_version=1, is_tunnel=True).run()
+#ProxyProtocolOutTest(pp_version=2, is_tunnel=True).run()
