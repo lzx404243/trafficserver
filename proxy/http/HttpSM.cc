@@ -1851,6 +1851,7 @@ HttpSM::create_server_session(NetVConnection *netvc, MIOBuffer *netvc_read_buffe
 bool
 HttpSM::create_server_txn(PoolableSession *new_session)
 {
+  SMDebug("zli11", "entered inside create_server_txn");
   ink_assert(new_session != nullptr);
   bool retval = false;
 
@@ -1882,7 +1883,7 @@ HttpSM::create_server_txn(PoolableSession *new_session)
 int
 HttpSM::state_http_server_open(int event, void *data)
 {
-  SMDebug("http_track", "entered inside state_http_server_open: %s", HttpDebugNames::get_event_name(event));
+  SMDebug("zli11", "entered inside state_http_server_open: %s", HttpDebugNames::get_event_name(event));
   STATE_ENTER(&HttpSM::state_http_server_open, event);
   ink_release_assert(event == EVENT_INTERVAL || event == NET_EVENT_OPEN || event == NET_EVENT_OPEN_FAILED ||
                      pending_action.empty());

@@ -63,7 +63,8 @@ VIO::get_reader() const
 TS_INLINE int64_t
 VIO::ntodo() const
 {
-  return nbytes - ndone;
+  Debug("zli11", "ntodo() is called - nbytes: %ld, ndone: %ld", nbytes, ndone);
+   return nbytes - ndone;
 }
 
 TS_INLINE void

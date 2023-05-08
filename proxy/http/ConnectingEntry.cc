@@ -38,6 +38,7 @@ ConnectingEntry::state_http_server_open(int event, void *data)
 {
   Debug("http_connect", "entered inside ConnectingEntry::state_http_server_open");
 
+  Debug("zli11", "entered inside ConnectingEntry::state_http_server_open");
   switch (event) {
   case NET_EVENT_OPEN: {
     netvc                  = static_cast<NetVConnection *>(data);
@@ -65,7 +66,7 @@ ConnectingEntry::state_http_server_open(int event, void *data)
   case VC_EVENT_READ_COMPLETE:
   case VC_EVENT_WRITE_READY:
   case VC_EVENT_WRITE_COMPLETE: {
-    Debug("http_connect", "Kick off %zd state machines waiting for origin", connect_sms.size());
+    Debug("zli11", "Kick off %zd state machines waiting for origin", connect_sms.size());
     this->remove_entry();
     netvc->do_io_write(nullptr, 0, nullptr);
     if (!connect_sms.empty()) {

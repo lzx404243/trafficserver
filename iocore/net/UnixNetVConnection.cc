@@ -24,6 +24,7 @@
 #include "P_Net.h"
 #include "tscore/ink_platform.h"
 #include "tscore/InkErrno.h"
+#include "tscpp/util/ts_diag_levels.h"
 
 #include <termios.h>
 
@@ -314,7 +315,9 @@ read_from_net(NetHandler *nh, UnixNetVConnection *vc, EThread *thread)
   if (r) {
     // If there are no more bytes to read, signal read complete
     ink_assert(ntodo >= 0);
+      Debug("zli11", "Checking whether to signal read complete.");
     if (s->vio.ntodo() <= 0) {
+      Debug("zli11", "Signalling read complete.");
       read_signal_done(VC_EVENT_READ_COMPLETE, nh, vc);
       Debug("iocore_net", "read_from_net, read finished - signal done");
       return;
@@ -357,6 +360,7 @@ write_to_net(NetHandler *nh, UnixNetVConnection *vc, EThread *thread)
 void
 write_to_net_io(NetHandler *nh, UnixNetVConnection *vc, EThread *thread)
 {
+  Debug("zli11", "entering write_to_net_io");
   NetState *s       = &vc->write;
   ProxyMutex *mutex = thread->mutex.get();
   Continuation *c   = vc->write.vio.cont;
@@ -368,12 +372,13 @@ write_to_net_io(NetHandler *nh, UnixNetVConnection *vc, EThread *thread)
     return;
   }
 
+  Debug("zli11", "write_to_net_io - not rescheduled.");
   if (vc->has_error()) {
     vc->lerrno = vc->error;
     write_signal_and_update(VC_EVENT_ERROR, vc);
     return;
   }
-
+  Debug("zli11", "write_to_net_io - vc no error!");
   // This function will always return true unless
   // vc is an SSLNetVConnection.
   if (!vc->getSSLHandShakeComplete()) {
@@ -415,20 +420,23 @@ write_to_net_io(NetHandler *nh, UnixNetVConnection *vc, EThread *thread)
 
     return;
   }
+  Debug("zli11", "write_to_net_io - SSL completed!");
 
   // If it is not enabled,add to WaitList.
   if (!s->enabled || s->vio.op != VIO::WRITE) {
     write_disable(nh, vc);
     return;
   }
+  Debug("zli11", "write_to_net_io - write is enabled.");
 
   // If there is nothing to do, disable
   int64_t ntodo = s->vio.ntodo();
   if (ntodo <= 0) {
+    // zli11: this is triggered in the bad case
     write_disable(nh, vc);
     return;
   }
-
+  Debug("zli11", "ntodo is %ld", ntodo);
   MIOBufferAccessor &buf = s->vio.buffer;
   ink_assert(buf.writer());
 
@@ -441,8 +449,10 @@ write_to_net_io(NetHandler *nh, UnixNetVConnection *vc, EThread *thread)
   int signalled = 0;
 
   // signal write ready to allow user to fill the buffer
+    Debug("zli11", "checking whether to signal write ready. To write: %ld, ntodo: %ld", towrite, ntodo);
   if (towrite != ntodo && !buf.writer()->high_water()) {
     if (write_signal_and_update(VC_EVENT_WRITE_READY, vc) != EVENT_CONT) {
+    Debug("zli11", "signal write ready.");
       return;
     } else if (c != s->vio.cont) { /* The write vio was updated in the handler */
       write_reschedule(nh, vc);
@@ -516,8 +526,10 @@ write_to_net_io(NetHandler *nh, UnixNetVConnection *vc, EThread *thread)
 
     // If there are no more bytes to write, signal write complete,
     ink_assert(ntodo >= 0);
+    Debug("zli11", "checking whether to signal write complete.");
     if (s->vio.ntodo() <= 0) {
       write_signal_done(VC_EVENT_WRITE_COMPLETE, nh, vc);
+      Debug("zli11", "Signalling write complete.");
       return;
     }
 
@@ -613,6 +625,7 @@ UnixNetVConnection::do_io_read(Continuation *c, int64_t nbytes, MIOBuffer *buf)
 VIO *
 UnixNetVConnection::do_io_write(Continuation *c, int64_t nbytes, IOBufferReader *reader, bool owner)
 {
+  Debug("zli11", "UnixNetVConnection::do_io_write. nbytes: %" PRId64 "", nbytes);
   if (closed && !(c == nullptr && nbytes == 0 && reader == nullptr)) {
     Error("do_io_write invoked on closed vc %p, cont %p, nbytes %" PRId64 ", reader %p", this, c, nbytes, reader);
     return nullptr;
