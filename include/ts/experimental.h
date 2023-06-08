@@ -55,8 +55,6 @@ typedef enum {
 struct in_addr;
 
 /* Cache APIs that are not yet fully supported and/or frozen nor complete. */
-tsapi TSReturnCode TSCacheBufferInfoGet(TSCacheTxn txnp, uint64_t *length, uint64_t *offset);
-
 tsapi TSCacheHttpInfo TSCacheHttpInfoCreate();
 tsapi void TSCacheHttpInfoReqGet(TSCacheHttpInfo infop, TSMBuffer *bufp, TSMLoc *obj);
 tsapi void TSCacheHttpInfoRespGet(TSCacheHttpInfo infop, TSMBuffer *bufp, TSMLoc *obj);
