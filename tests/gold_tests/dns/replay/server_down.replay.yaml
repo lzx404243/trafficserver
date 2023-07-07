@@ -18,44 +18,104 @@ meta:
   version: "1.0"
 
 sessions:
-- transactions:
-  - client-request:
-      # Delay to allow hostdb to sync external host file
-      delay: 2s
-      method: "GET"
-      version: "1.1"
-      url: /dns/mark/down
-      headers:
-        fields:
-        - [ Host, example.com ]
-        - [ X-Request, request ]
-        - [ uuid, 1 ]
+  - transactions:
+      - client-request:
+          # Delay to allow hostdb to sync external host file
+          delay: 2s
+          method: "GET"
+          version: "1.1"
+          url: /dns/mark/down
+          headers:
+            fields:
+              - [Host, example.com]
+              - [X-Request, request]
+              - [uuid, 1]
 
-    # Shouldn't be reached since server IP is unreachable
-    server-response:
-      status: 200
+        # Shouldn't be reached since server IP is unreachable
+        server-response:
+          status: 200
 
-    # Returns 502 since server connection is unreachable
-    proxy-response:
-      status: 502
+        # Returns 502 since server connection is unreachable
+        proxy-response:
+          status: 502
 
-  - client-request:
-      # Delay to allow hostdb to sync external host file
-      delay: 2s
-      method: "GET"
-      version: "1.1"
-      url: /dns/unreachable
-      headers:
-        fields:
-        - [ Host, example.com ]
-        - [ X-Request, request ]
-        - [ uuid, 2 ]
+      - client-request:
+          # Delay to allow hostdb to sync external host file
+          delay: 2s
+          method: "GET"
+          version: "1.1"
+          url: /dns/unreachable
+          headers:
+            fields:
+              - [Host, example.com]
+              - [X-Request, request]
+              - [uuid, 2]
 
-    # Shouldn't be reached since server IP is unreachable
-    server-response:
-      status: 200
+        # Shouldn't be reached since server IP is unreachable
+        server-response:
+          status: 200
 
-    # Previous request marked host down so DNS lookup returns unsuccessful
-    # 500 response indicates no valid server
-    proxy-response:
-      status: 500
+        # Previous request marked host down so DNS lookup returns unsuccessful
+        # 500 response indicates no valid server
+        proxy-response:
+          status: 500
+
+      - client-request:
+          # first request outside of the fail window, but within the dns valid period
+          delay: 13s
+          method: "GET"
+          version: "1.1"
+          url: /dns/host-up/fail-1
+          headers:
+            fields:
+              - [Host, example.com]
+              - [X-Request, request]
+              - [uuid, 3]
+
+        server-response:
+          status: 200
+
+        # Previous request marked host down so DNS lookup returns unsuccessful
+        # 500 response indicates no valid server
+        proxy-response:
+          status: 502
+
+      # - client-request:
+      #     # Delay to issue another request within the fail window
+      #     delay: 1s
+      #     method: "GET"
+      #     version: "1.1"
+      #     url: /dns/host-up/fail-1_1
+      #     headers:
+      #       fields:
+      #       - [ Host, example.com ]
+      #       - [ X-Request, request ]
+      #       - [ uuid, 4 ]
+
+      #   server-response:
+      #     status: 200
+
+      #   # Previous request marked host down so DNS lookup returns unsuccessful
+      #   # 500 response indicates no valid server
+      #   proxy-response:
+      #     status: 500
+
+      - client-request:
+          # The DNS record should timeout and be cleaned up
+          delay: 25s
+          method: "GET"
+          version: "1.1"
+          url: /dns/host-up/success
+          headers:
+            fields:
+              - [Host, example.com]
+              - [X-Request, request]
+              - [uuid, 4]
+
+        server-response:
+          status: 200
+
+        # Previous request marked host down so DNS lookup returns unsuccessful
+        # 500 response indicates no valid server
+        proxy-response:
+          status: 200
