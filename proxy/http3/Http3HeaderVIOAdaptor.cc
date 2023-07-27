@@ -23,6 +23,7 @@
 
 #include "Http3HeaderVIOAdaptor.h"
 
+#include "Http3Types.h"
 #include "I_VIO.h"
 #include "HTTP.h"
 
@@ -55,6 +56,20 @@ Http3HeaderVIOAdaptor::handle_frame(std::shared_ptr<const Http3Frame> frame, int
 
   if (res == 0) {
     // When decoding is not blocked, continuation should be called directly?
+    // TODO: zli11: should we add validation call here. Most likely not and we
+    // need ot add in the compete() callback.
+    Debug("http3", "zli11: decoding is not block and successful.");
+    bool is_outbound = http_hdr_type_get(_header.m_http) == HTTP_TYPE_RESPONSE;
+    auto is_valid    = _header.is_pseudo_header_valid(is_outbound, false);
+    if (is_valid) {
+      Debug("http3", "zli11: header is valid.");
+    } else {
+      Debug("http3", "zli11: header is invalid.");
+    }
+    // TODO: zli11: should really not be a Http3ConnectionError?
+    return _header.is_pseudo_header_valid(is_outbound, false) ?
+             Http3ErrorUPtr(new Http3NoError()) :
+             Http3ErrorUPtr(new Http3ConnectionError(Http3ErrorCode::H3_MESSAGE_ERROR, "Invalid header"));
   } else if (res == 1) {
     // Decoding is blocked.
     Debug("http3", "Decoding is blocked. DecodeRequest is scheduled");
@@ -78,6 +93,7 @@ Http3HeaderVIOAdaptor::event_handler(int event, Event *data)
 {
   switch (event) {
   case QPACK_EVENT_DECODE_COMPLETE:
+    Debug("http3", "zli11: QPACK_EVENT_DECODE_COMPLETE.");
     Debug("v_http3", "%s (%d)", "QPACK_EVENT_DECODE_COMPLETE", event);
     if (this->_on_qpack_decode_complete()) {
       // If READ_READY event is scheduled, should it be canceled?
@@ -95,6 +111,10 @@ Http3HeaderVIOAdaptor::event_handler(int event, Event *data)
 int
 Http3HeaderVIOAdaptor::_on_qpack_decode_complete()
 {
+  // TODO: zli11: add validation call? should it be before or after conversion?
+  // TODO: see whether this would be called if decoding is not blocked. I think
+  // so, as the conversion would need to happen.
+  Debug("http3", "zli11: _on_qpack_decode_complete.");
   int res = this->_hvc.convert(this->_header, 3, 1);
   if (res != 0) {
     Debug("http3", "PARSE_RESULT_ERROR");

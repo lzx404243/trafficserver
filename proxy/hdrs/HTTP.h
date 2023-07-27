@@ -656,6 +656,7 @@ public:
   bool is_keep_alive_set() const;
   bool expect_final_response() const;
   HTTPKeepAlive keep_alive_get() const;
+  bool is_pseudo_header_valid(bool is_outbound, bool is_trailing_header) const;
 
 protected:
   /** Load the target cache.

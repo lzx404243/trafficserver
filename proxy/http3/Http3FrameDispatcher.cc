@@ -109,6 +109,7 @@ Http3FrameDispatcher::on_read_ready(QUICStreamId stream_id, Http3StreamType stre
       for (auto h : handlers) {
         error = h->handle_frame(frame, frame_count - 1, stream_type);
         if (error->cls != Http3ErrorClass::NONE) {
+          Debug("http3", "zli11: error in header frame.");
           return error;
         }
       }
