@@ -22,7 +22,7 @@ check_PROGRAMS = test_Metrics
 
 TESTS = $(check_PROGRAMS)
 
-lib_LTLIBRARIES = libtsapi.la
+lib_LTLIBRARIES = libtsapi.la libpluginapi.la
 
 AM_CPPFLAGS += \
 	-I$(abs_top_srcdir)/include \
@@ -46,6 +46,31 @@ test_Metrics_CPPFLAGS = $(AM_CPPFLAGS)\
 test_Metrics_LDADD = \
 	$(top_builddir)/src/tscore/libtscore.a \
 	libtsapi.la
+
+
+# libpluginapi
+
+libpluginapi_la_CPPFLAGS = $(AM_CPPFLAGS)\
+  	$(iocore_include_dirs) \
+    -I$(abs_top_srcdir)/proxy \
+    -I$(abs_top_srcdir)/proxy/hdrs \
+    -I$(abs_top_srcdir)/proxy/http \
+    -I$(abs_top_srcdir)/proxy/http2 \
+    -I$(abs_top_srcdir)/proxy/http/remap \
+    -I$(abs_top_srcdir)/proxy/logging \
+    -I$(abs_top_srcdir)/src/traffic_server \
+    -I$(abs_top_srcdir)/mgmt/rpc \
+    -I$(abs_top_srcdir)/mgmt/ \
+    @YAMLCPP_INCLUDES@
+
+libpluginapi_la_LDFLAGS = @AM_LDFLAGS@ -version-info @TS_LIBTOOL_VERSION@ @SWOC_LDFLAGS@
+
+libpluginapi_la_LIBADD = \
+	@SWOC_LIBS@
+
+
+libpluginapi_la_SOURCES = \
+	InkAPI.cc
 
 
 clang-tidy-local: $(DIST_SOURCES)
