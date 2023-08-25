@@ -44,7 +44,7 @@
 #define LOG_FILENAME_SIZE 255
 
 // Globals the rest of the system depends on.
-int fds_limit;
+extern int fds_limit;
 
 static char error_tags[1024]  = "";
 static char action_tags[1024] = "";

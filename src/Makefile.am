@@ -30,15 +30,16 @@ SUBDIRS += wccp
 include traffic_wccp/Makefile.inc
 endif
 
-include traffic_cache_tool/Makefile.inc
-include traffic_via/Makefile.inc
-include traffic_top/Makefile.inc
-include traffic_server/Makefile.inc
-include traffic_logstats/Makefile.inc
-include traffic_crashlog/Makefile.inc
-include traffic_layout/Makefile.inc
+# TODO: uncoment these as the build works out.
+#include traffic_cache_tool/Makefile.inc
+#include traffic_via/Makefile.inc
+#include traffic_top/Makefile.inc
+#include traffic_server/Makefile.inc
+#include traffic_logstats/Makefile.inc
+#include traffic_crashlog/Makefile.inc
+#include traffic_layout/Makefile.inc
 include traffic_logcat/Makefile.inc
-include traffic_ctl/Makefile.inc
+#include traffic_ctl/Makefile.inc
 
 clang-tidy-local: $(DIST_SOURCES)
 	$(CXX_Clang_Tidy)

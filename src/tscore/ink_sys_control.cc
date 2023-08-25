@@ -28,6 +28,8 @@
 #include "tscore/ink_sys_control.h"
 #include "tscore/Diags.h"
 
+int fds_limit = 8000;
+
 rlim_t
 ink_max_out_rlimit(int which)
 {
