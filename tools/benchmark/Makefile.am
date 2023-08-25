@@ -46,28 +46,49 @@ benchmark_CPP_FLAGS = \
     @SWOC_INCLUDES@
 
 benchmark_LD_ADD = \
-	$(top_builddir)/iocore/eventsystem/libinkevent.a \
+	$(top_builddir)/proxy/logging/liblogging.a \
+	$(top_builddir)/proxy/hdrs/libhdrs.a \
+	$(top_builddir)/proxy/shared/libdiagsconfig.a \
 	$(top_builddir)/src/records/librecords_p.a \
-	$(top_builddir)/src/tscore/libtscore.a \
-	$(top_builddir)/src/api/libtsapi.la \
+	$(top_builddir)/iocore/eventsystem/libinkevent.a \
+	$(top_builddir)/iocore/utils/libinkutils.a \
 	$(top_builddir)/src/tscpp/util/libtscpputil.la \
+	$(top_builddir)/src/api/libtsapi.la \
+	$(top_builddir)/iocore/cache/libinkcache.a \
+	$(top_builddir)/lib/fastlz/libfastlz.a \
+	$(top_builddir)/proxy/http/libhttp.a \
+	$(top_builddir)/proxy/http/remap/libhttp_remap.a \
+	$(top_builddir)/proxy/http2/libhttp2.a \
+	$(top_builddir)/proxy/hdrs/libhdrs.a \
+	$(top_builddir)/proxy/libproxy.a \
+	$(top_builddir)/iocore/eventsystem/libinkevent.a \
+	$(top_builddir)/iocore/hostdb/libinkhostdb.a \
+	$(top_builddir)/iocore/dns/libinkdns.a \
+	$(top_builddir)/iocore/net/libinknet.a \
+	$(top_builddir)/iocore/aio/libinkaio.a \
+	$(top_builddir)/mgmt/rpc/libjsonrpc_protocol.la \
+	$(top_builddir)/src/tscore/libtscore.a \
+	$(top_builddir)/mgmt/config/libconfigmanager.a \
 	@HWLOC_LIBS@ \
     @LIBPCRE@ \
+    @OPENSSL_LIBS@ \
     @LIBCAP@ \
     @SWOC_LIBS@ \
-    @YAMLCPP_LIBS@
+    @YAMLCPP_LIBS@ \
+    @LIBZ@ \
+	@LIBLZMA@
 
-benchmark_FreeList_SOURCES = benchmark_FreeList.cc
+benchmark_FreeList_SOURCES = benchmark_FreeList.cc $(top_builddir)/src/shared/overridable_txn_vars.cc
 benchmark_FreeList_CPPFLAGS = $(benchmark_CPP_FLAGS)
 benchmark_FreeList_LDFLAGS = $(benchmark_LD_FLAGS)
 benchmark_FreeList_LDADD = $(benchmark_LD_ADD)
 
-benchmark_ProxyAllocator_SOURCES = benchmark_ProxyAllocator.cc
+benchmark_ProxyAllocator_SOURCES = benchmark_ProxyAllocator.cc $(top_builddir)/src/shared/overridable_txn_vars.cc
 benchmark_ProxyAllocator_CPPFLAGS = $(benchmark_CPP_FLAGS)
 benchmark_ProxyAllocator_LDFLAGS = $(benchmark_LD_FLAGS)
 benchmark_ProxyAllocator_LDADD = $(benchmark_LD_ADD)
 
-benchmark_SharedMutex_SOURCES = benchmark_SharedMutex.cc
+benchmark_SharedMutex_SOURCES = benchmark_SharedMutex.cc $(top_builddir)/src/shared/overridable_txn_vars.cc
 benchmark_SharedMutex_CPPFLAGS = $(benchmark_CPP_FLAGS)
 benchmark_SharedMutex_LDFLAGS = $(benchmark_LD_FLAGS)
 benchmark_SharedMutex_LDADD = $(benchmark_LD_ADD)
