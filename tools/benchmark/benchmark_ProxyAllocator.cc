@@ -29,6 +29,10 @@ limitations under the License.
 #include "I_Thread.h"
 #include "tscore/Allocator.h"
 
+#include "tscore/I_Version.h"
+
+AppVersionInfo appVersionInfo;
+
 namespace
 {
 class BThread : public Thread

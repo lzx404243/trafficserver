@@ -35,6 +35,10 @@
 #include <shared_mutex>
 #include <thread>
 
+#include "tscore/I_Version.h"
+
+AppVersionInfo appVersionInfo;
+
 namespace
 {
 // Args

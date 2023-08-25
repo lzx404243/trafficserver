@@ -36,6 +36,9 @@
 #include <hwloc.h>
 #endif
 
+#include "tscore/I_Version.h"
+
+AppVersionInfo appVersionInfo;
 namespace
 {
 InkFreeList *flist = nullptr;
