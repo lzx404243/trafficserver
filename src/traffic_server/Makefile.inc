@@ -49,8 +49,6 @@ traffic_server_traffic_server_SOURCES = \
 	traffic_server/EventName.h \
 	traffic_server/FetchSM.cc \
 	traffic_server/FetchSM.h \
-	traffic_server/HostStatus.cc \
-	traffic_server/InkAPI.cc \
 	traffic_server/InkContInternal.cc \
 	traffic_server/InkIOCoreAPI.cc \
 	traffic_server/SocksProxy.cc \

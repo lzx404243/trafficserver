@@ -41,6 +41,8 @@ noinst_LIBRARIES = libhttp.a
 libhttp_a_SOURCES = \
 	ConnectingEntry.cc \
 	ConnectingEntry.h \
+	FetchSM.cc \
+	FetchSM.h \
 	HttpSessionAccept.cc \
 	HttpSessionAccept.h \
 	HttpBodyFactory.cc \
