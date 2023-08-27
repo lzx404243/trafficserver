@@ -34,7 +34,7 @@ endif
 #include traffic_cache_tool/Makefile.inc
 #include traffic_via/Makefile.inc
 #include traffic_top/Makefile.inc
-#include traffic_server/Makefile.inc
+include traffic_server/Makefile.inc
 #include traffic_logstats/Makefile.inc
 #include traffic_crashlog/Makefile.inc
 #include traffic_layout/Makefile.inc
