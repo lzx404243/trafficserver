@@ -25,6 +25,8 @@ traffic_logstats_traffic_logstats_CPPFLAGS = \
 	-I$(abs_top_srcdir)/include \
 	-I$(abs_top_srcdir)/lib \
 	-I$(abs_top_srcdir)/proxy \
+	-I$(abs_top_srcdir)/proxy/http \
+	-I$(abs_top_srcdir)/proxy/hdrs \
 	-I$(abs_top_srcdir)/proxy/logging \
 	-I$(abs_top_srcdir)/proxy/shared \
 	-I$(abs_top_srcdir)/mgmt \
@@ -40,22 +42,37 @@ TESTS += \
 	traffic_logstats/tests/test_logstats_summary
 
 traffic_logstats_traffic_logstats_SOURCES = \
+	shared/overridable_txn_vars.cc \
 	traffic_logstats/logstats.cc
 
 traffic_logstats_traffic_logstats_LDADD = \
 	$(top_builddir)/proxy/logging/liblogging.a \
-	$(top_builddir)/proxy/hdrs/libhdrs.a \
 	$(top_builddir)/proxy/shared/libdiagsconfig.a \
 	$(top_builddir)/src/records/librecords_p.a \
-	$(top_builddir)/iocore/eventsystem/libinkevent.a \
 	$(top_builddir)/iocore/utils/libinkutils.a \
-	$(top_builddir)/src/tscore/libtscore.a \
 	$(top_builddir)/src/api/libtsapi.la \
+	$(top_builddir)/iocore/cache/libinkcache.a \
+	$(top_builddir)/lib/fastlz/libfastlz.a \
+	$(top_builddir)/proxy/http/libhttp.a \
+	$(top_builddir)/proxy/http/remap/libhttp_remap.a \
+	$(top_builddir)/proxy/http2/libhttp2.a \
+	$(top_builddir)/proxy/hdrs/libhdrs.a \
+	$(top_builddir)/proxy/libproxy.a \
+	$(top_builddir)/iocore/eventsystem/libinkevent.a \
+	$(top_builddir)/iocore/hostdb/libinkhostdb.a \
+	$(top_builddir)/iocore/dns/libinkdns.a \
+	$(top_builddir)/iocore/net/libinknet.a \
+	$(top_builddir)/iocore/aio/libinkaio.a \
+	$(top_builddir)/mgmt/rpc/libjsonrpc_protocol.la \
 	$(top_builddir)/src/tscpp/util/libtscpputil.la \
+	$(top_builddir)/src/tscore/libtscore.a \
+	$(top_builddir)/mgmt/config/libconfigmanager.a \
 	@OPENSSL_LIBS@ \
 	@SWOC_LIBS@ \
 	@HWLOC_LIBS@ \
 	@LIBCAP@ \
 	@LIBPCRE@ \
 	@YAMLCPP_LIBS@ \
+	@LIBZ@ \
+	@LIBLZMA@ \
 	@LIBPROFILER@ -lm
