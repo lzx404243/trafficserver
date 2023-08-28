@@ -22,10 +22,13 @@
  */
 
 #include "tscore/I_Layout.h"
+#include "tscore/I_Version.h"
 #include "tscore/runroot.h"
 #include "engine.h"
 
 using namespace std::literals;
+
+AppVersionInfo appVersionInfo;
 
 int
 main(int argc, const char **argv)
