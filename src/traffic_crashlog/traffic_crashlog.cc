@@ -43,7 +43,7 @@ static char *user         = nullptr;
 // If pid_t is not sizeof(int), we will have to jiggle argument parsing.
 extern char __pid_size_static_assert[sizeof(pid_t) == sizeof(int) ? 0 : -1];
 
-static AppVersionInfo appVersionInfo;
+AppVersionInfo appVersionInfo;
 static const ArgumentDescription argument_descriptions[] = {
   {"target", '-', "Target process ID",                         "I",  &target_pid,   nullptr, nullptr},
   {"host",   '-', "Host triplet for the process being logged", "S*", &host_triplet, nullptr, nullptr},

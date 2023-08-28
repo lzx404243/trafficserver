@@ -22,6 +22,9 @@ traffic_crashlog_traffic_crashlog_CPPFLAGS = \
     $(iocore_include_dirs) \
     -I$(abs_top_srcdir)/include \
     -I$(abs_top_srcdir)/lib \
+    -I$(abs_top_srcdir)/proxy \
+    -I$(abs_top_srcdir)/proxy/http \
+    -I$(abs_top_srcdir)/proxy/hdrs \
     -I$(abs_top_srcdir)/mgmt \
     @SWOC_INCLUDES@ \
     $(TS_INCLUDES)
@@ -31,14 +34,36 @@ traffic_crashlog_traffic_crashlog_LDFLAGS = \
     @OPENSSL_LDFLAGS@
 
 traffic_crashlog_traffic_crashlog_SOURCES = \
+	shared/overridable_txn_vars.cc \
 	traffic_crashlog/procinfo.cc \
 	traffic_crashlog/traffic_crashlog.cc \
 	traffic_crashlog/traffic_crashlog.h
 
+traffic_crashlog_traffic_crashlog_LIBTOOLFLAGS = --preserve-dup-deps
+
 traffic_crashlog_traffic_crashlog_LDADD = \
-	$(top_builddir)/iocore/eventsystem/libinkevent.a \
-	$(top_builddir)/src/records/librecords_p.a \
-	$(top_builddir)/src/tscore/libtscore.a \
-	$(top_builddir)/src/tscpp/util/libtscpputil.la \
-	$(top_builddir)/src/api/libtsapi.la \
-	@HWLOC_LIBS@ @SWOC_LIBS@ @YAMLCPP_LIBS@ @LIBPCRE@ @LIBCAP@
+    $(top_builddir)/src/records/librecords_p.a \
+    $(top_builddir)/src/tscpp/util/libtscpputil.la \
+    $(top_builddir)/src/api/libtsapi.la \
+    $(top_builddir)/iocore/cache/libinkcache.a \
+    $(top_builddir)/lib/fastlz/libfastlz.a \
+    $(top_builddir)/proxy/http/libhttp.a \
+    $(top_builddir)/iocore/utils/libinkutils.a \
+    $(top_builddir)/proxy/logging/liblogging.a \
+    $(top_builddir)/proxy/http/remap/libhttp_remap.a \
+    $(top_builddir)/proxy/http2/libhttp2.a \
+    $(top_builddir)/proxy/hdrs/libhdrs.a \
+    $(top_builddir)/proxy/libproxy.a \
+    $(top_builddir)/iocore/eventsystem/libinkevent.a \
+    $(top_builddir)/iocore/hostdb/libinkhostdb.a \
+    $(top_builddir)/iocore/dns/libinkdns.a \
+    $(top_builddir)/src/records/librecords_p.a \
+    $(top_builddir)/iocore/net/libinknet.a \
+    $(top_builddir)/iocore/aio/libinkaio.a \
+    $(top_builddir)/mgmt/rpc/libjsonrpc_protocol.la \
+    $(top_builddir)/src/tscore/libtscore.a \
+    $(top_builddir)/mgmt/config/libconfigmanager.a \
+    @HWLOC_LIBS@ @SWOC_LIBS@ @YAMLCPP_LIBS@ @LIBPCRE@ @LIBCAP@ \
+    @OPENSSL_LIBS@ \
+    @LIBZ@ \
+	@LIBLZMA@
