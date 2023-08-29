@@ -25,11 +25,14 @@
 #include "catch.hpp"
 
 #include "tscore/I_Layout.h"
+#include "tscore/I_Version.h"
 
 #include "I_EventSystem.h"
 #include "records/I_RecordsConfig.h"
 
 #include "diags.i"
+
+AppVersionInfo appVersionInfo;
 
 #define TEST_THREADS 1
 

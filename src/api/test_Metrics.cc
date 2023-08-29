@@ -26,6 +26,10 @@
 
 #include "api/Metrics.h"
 
+#include "tscore/I_Version.h"
+
+AppVersionInfo appVersionInfo;
+
 TEST_CASE("Metrics", "[libtsapi][Metrics]")
 {
   ts::Metrics m;

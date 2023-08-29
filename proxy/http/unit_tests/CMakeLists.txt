@@ -17,12 +17,12 @@
 
 add_executable(test_http
     main.cc
-    "${PROJECT_SOURCE_DIR}/iocore/cache/test/stub.cc"
     test_error_page_selection.cc
     test_ForwardedConfig.cc
     test_HttpTransact.cc
     test_HttpUserAgent.cc
     test_PreWarm.cc
+    ${CMAKE_SOURCE_DIR}/src/shared/overridable_txn_vars.cc
 )
 
 # transitive
@@ -31,6 +31,7 @@ target_include_directories(test_http
         "${PROJECT_BINARY_DIR}/include/ts"
 )
 
+# TODO: this may not built correctly. Fix this.
 target_link_libraries(test_http
     PRIVATE
         catch2::catch2
