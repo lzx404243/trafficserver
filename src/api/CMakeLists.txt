@@ -15,8 +15,15 @@
 #
 #######################
 
-add_library(tsapi SHARED Metrics.cc)
+add_library(tsapi SHARED Metrics.cc InkAPI.cc)
 add_library(ts::tsapi ALIAS tsapi)
+
+target_include_directories(tsapi PUBLIC
+        ${IOCORE_INCLUDE_DIRS}
+        ${PROXY_INCLUDE_DIRS}
+        ${CMAKE_SOURCE_DIR}/lib/yamlcpp/include
+        ${CMAKE_SOURCE_DIR}/mgmt
+        )
 
 install(TARGETS tsapi)
 

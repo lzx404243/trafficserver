@@ -17,6 +17,7 @@
 
 
 add_library(http STATIC
+        FetchSM.cc
         HttpSessionAccept.cc
         HttpBodyFactory.cc
         HttpCacheSM.cc
