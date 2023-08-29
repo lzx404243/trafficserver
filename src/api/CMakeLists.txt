@@ -33,9 +33,26 @@ endif()
 
 add_executable(test_Metrics
         test_Metrics.cc
+        ${CMAKE_SOURCE_DIR}/src/shared/overridable_txn_vars.cc
         )
 
-target_link_libraries(test_Metrics PRIVATE tsapi tscore)
+target_link_libraries(test_Metrics
+        PRIVATE
+        tscore
+        tsapi
+        http
+        inkcache
+        logging
+        http_remap
+        http2
+        hdrs
+        proxy
+        inkdns
+        jsonrpc_protocol
+        inknet
+        configmanager
+        libswoc
+)
 target_include_directories(test_Metrics PRIVATE ${CMAKE_SOURCE_DIR}/include ${CATCH_INCLUDE_DIR})
 
 add_test(NAME test_Metrics COMMAND $<TARGET_FILE:test_Metrics>)

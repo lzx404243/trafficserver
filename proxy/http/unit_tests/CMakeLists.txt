@@ -17,12 +17,12 @@
 
 add_executable(test_http
     main.cc
-    "${PROJECT_SOURCE_DIR}/iocore/cache/test/stub.cc"
     test_error_page_selection.cc
     test_ForwardedConfig.cc
     test_HttpTransact.cc
     test_HttpUserAgent.cc
     test_PreWarm.cc
+    ${CMAKE_SOURCE_DIR}/src/shared/overridable_txn_vars.cc
 )
 
 # transitive
@@ -34,14 +34,17 @@ target_include_directories(test_http
 target_link_libraries(test_http
     PRIVATE
         catch2::catch2
-        ts::http
         ts::tsapi
+        ts::http
+        ts::http2
         ts::hdrs # transitive
         logging # transitive
         http_remap # transitive
         ts::proxy
         inkdns # transitive
         ts::inknet
+        jsonrpc_protocol
+        configmanager
 )
 
 add_test(NAME test_http COMMAND $<TARGET_FILE:test_http>)
