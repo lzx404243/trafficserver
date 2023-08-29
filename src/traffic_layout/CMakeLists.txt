@@ -20,6 +20,7 @@ add_executable(traffic_layout
     file_system.cc
     info.cc
     traffic_layout.cc
+    ${CMAKE_SOURCE_DIR}/src/shared/overridable_txn_vars.cc
 )
 
 target_link_libraries(traffic_layout
@@ -30,6 +31,17 @@ target_link_libraries(traffic_layout
         yaml-cpp::yaml-cpp
         ts::tscore
         ts::tsapi
+        ts::http
+        ts::logging
+        ts::http_remap
+        ts::http2
+        ts::hdrs
+        ts::inkcache
+        ts::proxy
+        ts::inkdns
+        ts::inknet
+        ts::jsonrpc_protocol
+        ts::configmanager
         PCRE::PCRE
         ${OPENSSL_LIBRARY}
 )
