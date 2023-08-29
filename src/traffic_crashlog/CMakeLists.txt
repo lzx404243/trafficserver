@@ -15,7 +15,11 @@
 #
 #######################
 
-add_executable(traffic_crashlog procinfo.cc traffic_crashlog.cc)
+add_executable(traffic_crashlog
+    procinfo.cc
+    traffic_crashlog.cc
+    ${CMAKE_SOURCE_DIR}/src/shared/overridable_txn_vars.cc
+)
 
 target_link_libraries(traffic_crashlog
     PRIVATE
@@ -23,6 +27,17 @@ target_link_libraries(traffic_crashlog
         ts::records
         ts::tscore
         ts::tsapi
+        ts::http
+        ts::logging
+        ts::http_remap
+        ts::http2
+        ts::hdrs
+        ts::inkcache
+        ts::proxy
+        ts::inkdns
+        ts::inknet
+        ts::jsonrpc_protocol
+        ts::configmanager
 )
 
 install(TARGETS traffic_crashlog)
