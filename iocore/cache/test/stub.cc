@@ -215,7 +215,7 @@ INKVConnInternal::INKVConnInternal() : INKContInternal() {}
 
 INKVConnInternal::INKVConnInternal(TSEventFunc funcp, TSMutex mutexp) : INKContInternal(funcp, mutexp) {}
 
-#include "../src/traffic_server/FetchSM.h"
+#include "../proxy/http/FetchSM.h"
 ClassAllocator<FetchSM> FetchSMAllocator("unusedFetchSMAllocator");
 void
 FetchSM::ext_launch()
