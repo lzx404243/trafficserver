@@ -28,50 +28,8 @@ initialize_thread_for_http_sessions(EThread *, int)
 {
 }
 
-#include "P_UnixNet.h"
-#include "P_DNSConnection.h"
-int
-DNSConnection::close()
-{
-  ink_assert(false);
-  return 0;
-}
-
-void
-DNSConnection::trigger()
-{
-  ink_assert(false);
-}
-
-#include "StatPages.h"
-void
-StatPagesManager::register_http(char const *, Action *(*)(Continuation *, HTTPHdr *))
-{
-  ink_assert(false);
-}
-
-#include "ParentSelection.h"
-void
-SocksServerConfig::startup()
-{
-  ink_assert(false);
-}
-
-int SocksServerConfig::m_id = 0;
-
-void
-ParentConfigParams::findParent(HttpRequestData *, ParentResult *, unsigned int, unsigned int)
-{
-  ink_assert(false);
-}
-
-void
-ParentConfigParams::nextParent(HttpRequestData *, ParentResult *, unsigned int, unsigned int)
-{
-  ink_assert(false);
-}
-
 #include "InkAPIInternal.h"
+
 int
 APIHook::invoke(int, void *) const
 {
@@ -113,84 +71,6 @@ ConfigUpdateCbTable::invoke(const char * /* name ATS_UNUSED */)
   ink_release_assert(false);
 }
 
-#include "ControlMatcher.h"
-char *
-HttpRequestData::get_string()
-{
-  ink_assert(false);
-  return nullptr;
-}
-
-const char *
-HttpRequestData::get_host()
-{
-  ink_assert(false);
-  return nullptr;
-}
-
-sockaddr const *
-HttpRequestData::get_ip()
-{
-  ink_assert(false);
-  return nullptr;
-}
-
-sockaddr const *
-HttpRequestData::get_client_ip()
-{
-  ink_assert(false);
-  return nullptr;
-}
-
 SslAPIHooks *ssl_hooks             = nullptr;
 LifecycleAPIHooks *lifecycle_hooks = nullptr;
 StatPagesManager statPagesManager;
-
-#include "PreWarmManager.h"
-void
-PreWarmManager::reconfigure()
-{
-  ink_assert(false);
-  return;
-}
-
-PreWarmManager prewarmManager;
-
-#include "../src/traffic_server/FetchSM.h"
-ClassAllocator<FetchSM> FetchSMAllocator("unusedFetchSMAllocator");
-void
-FetchSM::ext_launch()
-{
-}
-void
-FetchSM::ext_destroy()
-{
-}
-ssize_t
-FetchSM::ext_read_data(char *, unsigned long)
-{
-  return 0;
-}
-void
-FetchSM::ext_add_header(char const *, int, char const *, int)
-{
-}
-void
-FetchSM::ext_write_data(void const *, unsigned long)
-{
-}
-void *
-FetchSM::ext_get_user_data()
-{
-  return nullptr;
-}
-void
-FetchSM::ext_set_user_data(void *)
-{
-}
-void
-FetchSM::ext_init(Continuation *, char const *, char const *, char const *, sockaddr const *, int)
-{
-}
-
-ChunkedHandler::ChunkedHandler() {}

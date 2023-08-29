@@ -23,6 +23,7 @@ include_directories(
 )
 
 link_libraries(
+        tsapi
         http
         http_remap
         http2
@@ -47,11 +48,12 @@ link_libraries(
         aio
         records
         tscore
-        tsapi
         tscpputil
         proxy
         inknet
         inkevent
+        ts::jsonrpc_protocol
+        ts::configmanager
         yaml-cpp
         libswoc
         catch2::catch2
@@ -65,6 +67,7 @@ macro(add_cache_test name)
             ${CMAKE_SOURCE_DIR}/iocore/cache/test/main.cc
             ${CMAKE_SOURCE_DIR}/iocore/cache/test/stub.cc
             ${CMAKE_SOURCE_DIR}/iocore/cache/test/CacheTestHandler.cc
+            ${CMAKE_SOURCE_DIR}/src/shared/overridable_txn_vars.cc
             ${ARGN})
     target_link_libraries(${name} PRIVATE ts::proxy)
     add_test(NAME test_cache_${name} COMMAND $<TARGET_FILE:${name}>)
@@ -72,7 +75,6 @@ endmacro()
 
 macro(add_net_test name)
     add_executable(${name}
-            ${CMAKE_SOURCE_DIR}/iocore/net/libinknet_stub.cc
             ${ARGN})
     target_link_libraries(${name} PRIVATE ts::proxy)
     add_test(NAME test_cache_${name} COMMAND $<TARGET_FILE:${name}>)
@@ -98,7 +100,7 @@ add_cache_test(Update_L_to_S ${CMAKE_SOURCE_DIR}/iocore/cache/test/test_Update_L
 add_cache_test(Update_S_to_L ${CMAKE_SOURCE_DIR}/iocore/cache/test/test_Update_S_to_L.cc)
 #add_cache_test(Update_Header ${CMAKE_SOURCE_DIR}/iocore/cache/test/test_Update_Header.cc)
 
-add_executable(test_AIO ${CMAKE_SOURCE_DIR}/iocore/aio/test_AIO.cc)
+add_executable(test_AIO ${CMAKE_SOURCE_DIR}/iocore/aio/test_AIO.cc ${CMAKE_SOURCE_DIR}/src/shared/overridable_txn_vars.cc)
 add_test(NAME test_AIO COMMAND $<TARGET_FILE:test_AIO> WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/iocore/aio)
 
 add_net_test(test_net
@@ -106,6 +108,7 @@ add_net_test(test_net
     "${CMAKE_SOURCE_DIR}/iocore/net/unit_tests/test_SSLSNIConfig.cc"
     "${CMAKE_SOURCE_DIR}/iocore/net/unit_tests/test_YamlSNIConfig.cc"
     "${CMAKE_SOURCE_DIR}/iocore/net/unit_tests/unit_test_main.cc"
+    "${CMAKE_SOURCE_DIR}/src/shared/overridable_txn_vars.cc"
 )
 set(LIBINKNET_UNIT_TEST_DIR "${CMAKE_SOURCE_DIR}/iocore/net/unit_tests")
 target_compile_definitions(test_net
@@ -118,14 +121,13 @@ target_link_libraries(test_net
         proxy
 )
 
-add_stubbed_test(EventSystem ${CMAKE_SOURCE_DIR}/iocore/eventsystem/unit_tests/test_EventSystem.cc)
-add_stubbed_test(IOBuffer ${CMAKE_SOURCE_DIR}/iocore/eventsystem/unit_tests/test_IOBuffer.cc)
+add_stubbed_test(EventSystem ${CMAKE_SOURCE_DIR}/iocore/eventsystem/unit_tests/test_EventSystem.cc ${CMAKE_SOURCE_DIR}/src/shared/overridable_txn_vars.cc)
+add_stubbed_test(IOBuffer ${CMAKE_SOURCE_DIR}/iocore/eventsystem/unit_tests/test_IOBuffer.cc ${CMAKE_SOURCE_DIR}/src/shared/overridable_txn_vars.cc)
 
 add_stubbed_test(HttpTransact
   ${CMAKE_SOURCE_DIR}/proxy/http/unit_tests/main.cc
   ${CMAKE_SOURCE_DIR}/proxy/http/unit_tests/test_HttpTransact.cc
 )
-
 # maybe move this one back to iocore/eventsystem/CMakeLists.txt
 #add_stubbed_test(MIOBufferWriter ${CMAKE_SOURCE_DIR}/iocore/eventsystem/unit_tests/test_MIOBufferWriter.cc)
 #add_stubbed_test(ProxyAllocator ${CMAKE_SOURCE_DIR}/iocore/eventsystem/unit_tests/benchmark_ProxyAllocator.cc)

@@ -25,6 +25,7 @@
 #include "InkAPIInternal.h"
 #include "tscore/ink_hw.h"
 #include "tscore/I_Layout.h"
+#include "tscore/I_Version.h"
 #include "tscore/TSSystemState.h"
 #include "tscore/Random.h"
 #include <iostream>
@@ -32,6 +33,8 @@
 
 using std::cout;
 using std::endl;
+
+AppVersionInfo appVersionInfo;
 
 #include "diags.i"
 

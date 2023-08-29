@@ -29,10 +29,12 @@
 #include "tscore/BaseLogFile.h"
 #include "tscore/Diags.h"
 #include "tscore/I_Layout.h"
+#include "tscore/I_Version.h"
 
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 
+AppVersionInfo appVersionInfo;
 inline static constexpr int test_threads{1};
 
 class EventProcessorListener final : public Catch::TestEventListenerBase
