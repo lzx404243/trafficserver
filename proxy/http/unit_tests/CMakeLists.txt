@@ -31,7 +31,6 @@ target_include_directories(test_http
         "${PROJECT_BINARY_DIR}/include/ts"
 )
 
-# TODO: this may not built correctly. Fix this.
 target_link_libraries(test_http
     PRIVATE
         catch2::catch2
