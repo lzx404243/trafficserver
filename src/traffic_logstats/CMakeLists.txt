@@ -15,8 +15,31 @@
 #
 #######################
 
-add_executable(traffic_logstats logstats.cc)
-target_link_libraries(traffic_logstats PRIVATE ts::logging ts::hdrs ts::tscore ts::tsapi ts::records ts::diagsconfig ts::inkevent libswoc)
+add_executable(traffic_logstats
+  logstats.cc
+  ${CMAKE_SOURCE_DIR}/src/shared/overridable_txn_vars.cc
+)
+
+target_link_libraries(traffic_logstats
+  PRIVATE
+    ts::logging
+    ts::hdrs
+    ts::tscore
+    ts::tsapi
+    ts::records
+    ts::http
+    ts::http_remap
+    ts::http2
+    ts::hdrs
+    ts::diagsconfig
+    ts::inkdns
+    ts::inkevent
+    ts::proxy
+    ts::inknet
+    ts::jsonrpc_protocol
+    ts::configmanager
+    libswoc
+)
 
 add_test(
   NAME test_logstats_json

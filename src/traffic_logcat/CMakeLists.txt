@@ -15,6 +15,25 @@
 #
 #######################
 
-add_executable(traffic_logcat logcat.cc)
-target_link_libraries(traffic_logcat PRIVATE ts::tscore ts::proxy ts::logging ts::hdrs ts::tsapi ts::diagsconfig libswoc)
+add_executable(traffic_logcat
+    logcat.cc
+    ${CMAKE_SOURCE_DIR}/src/shared/overridable_txn_vars.cc
+)
+
+target_link_libraries(traffic_logcat
+    PRIVATE
+    ts::tscore
+    ts::tsapi
+    ts::http
+    ts::http_remap
+    ts::logging
+    ts::http2
+    ts::hdrs
+    ts::diagsconfig
+    ts::inkdns
+    ts::proxy
+    ts::inknet
+    ts::jsonrpc_protocol
+    ts::configmanager
+    libswoc)
 install(TARGETS traffic_logcat)

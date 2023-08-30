@@ -35,13 +35,17 @@ target_include_directories(test_http
 target_link_libraries(test_http
     PRIVATE
         catch2::catch2
+        ts::tsapi
         ts::http
+        ts::http2
         ts::hdrs # transitive
         logging # transitive
         http_remap # transitive
         ts::proxy
         inkdns # transitive
         ts::inknet
+        jsonrpc_protocol
+        configmanager
 )
 
 add_test(NAME test_http COMMAND $<TARGET_FILE:test_http>)
