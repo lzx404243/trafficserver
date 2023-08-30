@@ -45,8 +45,6 @@ target_link_libraries(records
         ts::inkevent
         ts::tscore
         yaml-cpp::yaml-cpp
-    PRIVATE
-        ts::tsapi
 )
 
 add_executable(test_records unit_tests/unit_test_main.cc unit_tests/test_RecHttp.cc)
