@@ -22,12 +22,15 @@
 #include <string>
 #include "tscpp/util/ts_bw.h"
 #include "tscore/ink_resolver.h"
+#include "tscore/I_Version.h"
 #include "test_Diags.h"
 
 #define CATCH_CONFIG_RUNNER
 #include "catch.hpp"
 
 extern void ts_session_protocol_well_known_name_indices_init();
+
+AppVersionInfo appVersionInfo;
 
 int
 main(int argc, char *argv[])

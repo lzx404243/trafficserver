@@ -81,16 +81,38 @@ test_UDPNet_LDFLAGS = \
 	@LIBPCRE@
 
 
-test_UDPNet_LDADD = \
-	libinknet.a \
-	$(top_builddir)/iocore/eventsystem/libinkevent.a \
+test_UDPNet_LIBTOOLFLAGS = --preserve-dup-deps
+
+tests_LDADD = \
 	$(top_builddir)/src/records/librecords_p.a \
 	$(top_builddir)/proxy/hdrs/libhdrs.a \
-	$(top_builddir)/src/tscore/libtscore.a \
-	$(top_builddir)/src/tscpp/util/libtscpputil.la \
 	$(top_builddir)/src/api/libtsapi.la \
+	$(top_builddir)/iocore/cache/libinkcache.a \
+    $(top_builddir)/lib/fastlz/libfastlz.a \
+	$(top_builddir)/iocore/aio/libinkaio.a \
+    $(top_builddir)/iocore/hostdb/libinkhostdb.a \
+    $(top_builddir)/iocore/dns/libinkdns.a \
+    $(top_builddir)/proxy/http/libhttp.a \
+    $(top_builddir)/iocore/utils/libinkutils.a \
+    $(top_builddir)/proxy/logging/liblogging.a \
+    $(top_builddir)/proxy/http/remap/libhttp_remap.a \
+    $(top_builddir)/proxy/http2/libhttp2.a \
+	$(top_builddir)/proxy/hdrs/libhdrs.a \
+    $(top_builddir)/proxy/libproxy.a \
+	libinknet.a \
+	$(top_builddir)/src/records/librecords_p.a \
 	$(top_builddir)/proxy/ParentSelectionStrategy.o \
-	@HWLOC_LIBS@ @OPENSSL_LIBS@ @LIBPCRE@ @YAMLCPP_LIBS@ @SWOC_LIBS@ @LIBPCRE@ @LIBCAP@
+	$(top_builddir)/iocore/eventsystem/libinkevent.a \
+	$(top_builddir)/src/tscpp/util/libtscpputil.la \
+    $(top_builddir)/mgmt/rpc/libjsonrpc_protocol.la \
+    $(top_builddir)/mgmt/config/libconfigmanager.a \
+	$(top_builddir)/src/tscore/libtscore.a \
+	@HWLOC_LIBS@ @OPENSSL_LIBS@ @LIBPCRE@ @YAMLCPP_LIBS@ @SWOC_LIBS@ @LIBPCRE@ @LIBCAP@ \
+    @LIBZ@ \
+	@LIBLZMA@
+
+test_UDPNet_LDADD = $(tests_LDADD)
+
 if ENABLE_QUIC
 test_UDPNet_LDADD += \
 	$(top_builddir)/iocore/net/quic/libquic.a
@@ -98,14 +120,16 @@ endif
 
 test_UDPNet_SOURCES = \
 	libinknet_stub.cc \
-	test_I_UDPNet.cc
+	test_I_UDPNet.cc \
+	$(top_builddir)/src/shared/overridable_txn_vars.cc
 
 test_libinknet_SOURCES = \
 	libinknet_stub.cc \
 	unit_tests/unit_test_main.cc \
 	unit_tests/test_ProxyProtocol.cc \
 	unit_tests/test_SSLSNIConfig.cc \
-	unit_tests/test_YamlSNIConfig.cc
+	unit_tests/test_YamlSNIConfig.cc \
+	$(top_builddir)/src/shared/overridable_txn_vars.cc
 
 test_libinknet_CPPFLAGS = \
 	$(AM_CPPFLAGS) \
@@ -123,16 +147,9 @@ test_libinknet_LDFLAGS = \
 	@YAMLCPP_LDFLAGS@ \
 	@SWOC_LDFLAGS@
 
-test_libinknet_LDADD = \
-	libinknet.a \
-	$(top_builddir)/iocore/eventsystem/libinkevent.a \
-	$(top_builddir)/src/records/librecords_p.a \
-	$(top_builddir)/proxy/hdrs/libhdrs.a \
-	$(top_builddir)/src/tscore/libtscore.a \
-	$(top_builddir)/src/api/libtsapi.la \
-	$(top_builddir)/src/tscpp/util/libtscpputil.la \
-	$(top_builddir)/proxy/ParentSelectionStrategy.o \
-	@HWLOC_LIBS@ @OPENSSL_LIBS@ @LIBPCRE@ @YAMLCPP_LIBS@ @SWOC_LIBS@ @LIBCAP@
+test_libinknet_LIBTOOLFLAGS = --preserve-dup-deps
+
+test_libinknet_LDADD =  $(tests_LDADD)
 
 if ENABLE_QUIC
 test_libinknet_LDADD += \

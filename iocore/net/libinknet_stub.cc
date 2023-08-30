@@ -73,4 +73,3 @@ ConfigUpdateCbTable::invoke(const char * /* name ATS_UNUSED */)
 
 SslAPIHooks *ssl_hooks             = nullptr;
 LifecycleAPIHooks *lifecycle_hooks = nullptr;
-StatPagesManager statPagesManager;

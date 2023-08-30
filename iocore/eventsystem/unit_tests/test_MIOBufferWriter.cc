@@ -23,8 +23,10 @@
 
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
-
 #include <cstdint>
+#include "tscore/I_Version.h"
+
+AppVersionInfo appVersionInfo;
 
 struct IOBufferBlock {
   std::int64_t write_avail();

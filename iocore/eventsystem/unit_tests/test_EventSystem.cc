@@ -27,7 +27,10 @@
 #include "I_EventSystem.h"
 #include "tscore/ink_atomic.h"
 #include "tscore/I_Layout.h"
+#include "tscore/I_Version.h"
 #include "tscore/TSSystemState.h"
+
+AppVersionInfo appVersionInfo;
 
 #include "diags.i"
 

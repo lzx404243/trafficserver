@@ -95,26 +95,48 @@ test_CPP_FLAGS = \
 test_LD_ADD = \
 	libinkevent.a \
 	$(top_builddir)/src/records/librecords_p.a \
-	$(top_builddir)/iocore/eventsystem/libinkevent.a \
-	$(top_builddir)/src/tscore/libtscore.a \
 	$(top_builddir)/src/api/libtsapi.la \
+	$(top_builddir)/iocore/cache/libinkcache.a \
+    $(top_builddir)/lib/fastlz/libfastlz.a \
+    $(top_builddir)/proxy/http/libhttp.a \
+	$(top_builddir)/src/records/librecords_p.a \
+    $(top_builddir)/iocore/utils/libinkutils.a \
+    $(top_builddir)/proxy/logging/liblogging.a \
+    $(top_builddir)/proxy/http/remap/libhttp_remap.a \
+    $(top_builddir)/proxy/http2/libhttp2.a \
+	$(top_builddir)/proxy/hdrs/libhdrs.a \
+    $(top_builddir)/proxy/libproxy.a \
+    $(top_builddir)/iocore/hostdb/libinkhostdb.a \
+    $(top_builddir)/iocore/dns/libinkdns.a \
+    $(top_builddir)/iocore/net/libinknet.a \
+	$(top_builddir)/iocore/aio/libinkaio.a \
 	$(top_builddir)/src/tscpp/util/libtscpputil.la \
-	@HWLOC_LIBS@ @SWOC_LIBS@ @YAMLCPP_LIBS@ @LIBPCRE@ @LIBCAP@
+	$(top_builddir)/iocore/eventsystem/libinkevent.a \
+    $(top_builddir)/mgmt/rpc/libjsonrpc_protocol.la \
+    $(top_builddir)/mgmt/config/libconfigmanager.a \
+	$(top_builddir)/src/tscore/libtscore.a \
+	@HWLOC_LIBS@ @SWOC_LIBS@ @YAMLCPP_LIBS@ @LIBPCRE@ @LIBCAP@ \
+	@OPENSSL_LIBS@ \
+    @LIBZ@ \
+	@LIBLZMA@
 
-test_EventSystem_SOURCES = unit_tests/test_EventSystem.cc
+test_EventSystem_SOURCES = unit_tests/test_EventSystem.cc $(top_builddir)/src/shared/overridable_txn_vars.cc
 test_EventSystem_CPPFLAGS = $(test_CPP_FLAGS)
 test_EventSystem_LDFLAGS = $(test_LD_FLAGS)
 test_EventSystem_LDADD = $(test_LD_ADD)
+test_EventSystem_LIBTOOLFLAGS = --preserve-dup-deps
 
-test_IOBuffer_SOURCES = unit_tests/test_IOBuffer.cc
+test_IOBuffer_SOURCES = unit_tests/test_IOBuffer.cc $(top_builddir)/src/shared/overridable_txn_vars.cc
 test_IOBuffer_CPPFLAGS = $(test_CPP_FLAGS)
 test_IOBuffer_LDFLAGS = $(test_LD_FLAGS)
 test_IOBuffer_LDADD = $(test_LD_ADD)
+test_IOBuffer_LIBTOOLFLAGS = --preserve-dup-deps
 
-test_MIOBufferWriter_SOURCES = unit_tests/test_MIOBufferWriter.cc
+test_MIOBufferWriter_SOURCES = unit_tests/test_MIOBufferWriter.cc $(top_builddir)/src/shared/overridable_txn_vars.cc
 test_MIOBufferWriter_CPPFLAGS = $(test_CPP_FLAGS)
 test_MIOBufferWriter_LDFLAGS = $(test_LD_FLAGS)
 test_MIOBufferWriter_LDADD = $(test_LD_ADD)
+test_MIOBufferWriter_LIBTOOLFLAGS = --preserve-dup-deps
 
 include $(top_srcdir)/mk/tidy.mk
 

@@ -26,6 +26,7 @@
 #include <cstring>
 
 #include "tscore/I_Layout.h"
+#include "tscore/I_Version.h"
 #include "tscore/TestBox.h"
 
 #include "I_EventSystem.h"
@@ -37,6 +38,8 @@
 #include "P_UDPConnection.h"
 
 #include "diags.i"
+
+AppVersionInfo appVersionInfo;
 
 static const char payload[] = "hello";
 in_port_t port              = 0;

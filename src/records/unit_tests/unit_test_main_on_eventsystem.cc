@@ -26,6 +26,7 @@
 
 #include "I_EventSystem.h"
 #include "tscore/I_Layout.h"
+#include "tscore/I_Version.h"
 #include "tscore/TSSystemState.h"
 
 #include "diags.i"
@@ -34,6 +35,8 @@ namespace
 {
 constexpr int TEST_THREADS = 2;
 }
+
+AppVersionInfo appVersionInfo;
 
 struct EventProcessorListener : Catch::TestEventListenerBase {
   using TestEventListenerBase::TestEventListenerBase;
