@@ -22,6 +22,7 @@ TS_PLUGIN_LD_FLAGS = \
   -module \
   -shared \
   -avoid-version \
+  -Wl,--no-undefined \
   -export-symbols-regex '^(TSRemapInit|TSRemapDone|TSRemapDoRemap|TSRemapNewInstance|TSRemapDeleteInstance|TSRemapOSResponse|TSPluginInit|TSRemapPreConfigReload|TSRemapPostConfigReload)$$'
 
 TS_PLUGIN_CPPFLAGS = \

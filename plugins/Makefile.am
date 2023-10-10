@@ -25,7 +25,8 @@ pkglib_LTLIBRARIES =
 
 SUBDIRS =
 
-AM_LDFLAGS += $(TS_PLUGIN_LD_FLAGS)
+# Link all plugins against libtsapi.so.
+AM_LDFLAGS += $(TS_PLUGIN_LD_FLAGS) $(top_builddir)/src/api/libtsapi.la
 
 include authproxy/Makefile.inc
 include background_fetch/Makefile.inc
